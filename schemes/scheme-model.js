@@ -17,20 +17,32 @@ function find() {
     return  db('schemes')
 }
 
-function findById() {
-    return null
+function findById(id) {
+    return db('schemes')
+    .where({id})
+    .first();
 }
 
-function findSteps() {
-    return null
+function findSteps(id) {
+    return db('steps as s')
+    .select("s.id", "s.step_number", "s.instructions", "sc.scheme_name")
+    .join("schemes as sc", "s.scheme_id", "sc.id")
+    .where("s.scheme_id", "=", id)
+    .orderBy("s.step_number", "asc");
+
 }
 
-function add(){
-    return null
+function add(scheme){
+    return db('schemes')
+    .insert(scheme)
+    .then(id => findById(id[0]))
 }
 
-function update(){
-    return null
+function update(obj, id){
+    return db('schemes')
+    .update('scheme_name', obj.scheme_name)
+    .where({id})
+    .then(() => findById(id))
 }
 
 function remove(){
