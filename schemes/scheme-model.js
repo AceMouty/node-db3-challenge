@@ -45,6 +45,9 @@ function update(obj, id){
     .then(() => findById(id))
 }
 
-function remove(){
-    return null
+function remove(id){
+    return db('schemes')
+    .del()
+    .where({id})
+    .then(() => find())
 }
